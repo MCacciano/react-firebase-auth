@@ -1,24 +1,22 @@
 import React, { useContext } from 'react';
-import { auth, signInWithGoogle } from './firebase/init';
+import { Switch, Route } from 'react-router-dom';
 
-import UserContext from './context/userContext';
+// pages
+import HomePage from './pages';
+
+// components
+import Header from './components/Header';
 
 import './App.css';
 
 const App = () => {
-  const { user } = useContext(UserContext);
-
   return (
-    <div>
-      <h1>App</h1>
-      <button
-        type='button'
-        onClick={user ? () => auth.signOut() : signInWithGoogle}
-      >
-        {user ? 'Sign Out' : 'Sign In'}
-      </button>
-      {user && <h1>{user.displayName}</h1>}
-    </div>
+    <>
+      <Header />
+      <Switch>
+        <Route exact path="/" component={HomePage} />
+      </Switch>
+    </>
   );
 };
 
