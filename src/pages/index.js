@@ -8,8 +8,10 @@ const HomePage = () => {
 
   return (
     <div>
-      <h1>App</h1>
-      <button type="button" onClick={user ? () => auth.signOut() : signInWithGoogle}>
+      <button
+        type='button'
+        onClick={user ? () => auth.signOut() : signInWithGoogle}
+      >
         {user ? 'Sign Out' : 'Sign In'}
       </button>
       {user && <h1>{user.displayName}</h1>}

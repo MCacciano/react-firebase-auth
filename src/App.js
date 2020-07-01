@@ -3,8 +3,10 @@ import { Switch, Route } from 'react-router-dom';
 
 // pages
 import HomePage from './pages';
+import SecretPage from './pages/SecretPage';
 
 // components
+import AuthRoute from './components/AuthRoute';
 import Header from './components/Header';
 
 import './App.css';
@@ -14,7 +16,8 @@ const App = () => {
     <>
       <Header />
       <Switch>
-        <Route exact path="/" component={HomePage} />
+        <Route exact path='/' component={HomePage} />
+        <AuthRoute path='/secret' component={SecretPage} />
       </Switch>
     </>
   );
