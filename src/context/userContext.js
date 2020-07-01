@@ -1,27 +1,10 @@
-import React, { createContext, useReducer, useEffect } from 'react';
+import React, { createContext, useEffect, useState } from 'react';
 import { auth } from '../firebase/init';
 
-import { SET_USER } from './types';
-
-const userReducer = (state, action) => {
-  switch (action.type) {
-    case SET_USER:
-      return {
-        user: action.payload
-      };
-    default:
-      throw new Error('There is no action with that type');
-  }
-};
-
-const initialState = {
-  user: null
-};
-
-const UserContext = createContext(initialState);
+const UserContext = createContext({ user: null });
 
 export const UserProvider = ({ children }) => {
-  const [state, dispatch] = useReducer(userReducer, initialState);
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
     auth.onAuthStateChanged(authUser => {
@@ -32,12 +15,8 @@ export const UserProvider = ({ children }) => {
     });
   }, []);
 
-  const setUser = authUser => {
-    dispatch({ type: SET_USER, payload: authUser });
-  };
-
   return (
-    <UserContext.Provider value={{ user: state.user, setUser }}>{children}</UserContext.Provider>
+    <UserContext.Provider value={{ user }}>{children}</UserContext.Provider>
   );
 };
 

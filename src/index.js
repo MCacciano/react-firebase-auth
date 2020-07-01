@@ -6,15 +6,11 @@ import { UserProvider } from './context/userContext';
 
 import App from './App';
 
-let app = null;
-
-if (!app && firebase.apps.length) {
-  app = ReactDOM.render(
-    <React.StrictMode>
-      <UserProvider>
-        <App />
-      </UserProvider>
-    </React.StrictMode>,
-    document.getElementById('root')
-  );
-}
+ReactDOM.render(
+  <React.StrictMode>
+    <UserProvider>
+      <App />
+    </UserProvider>
+  </React.StrictMode>,
+  document.getElementById('root')
+);
