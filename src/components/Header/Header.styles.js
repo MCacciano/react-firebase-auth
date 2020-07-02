@@ -12,6 +12,7 @@ export const Navbar = styled.nav`
   display: flex;
   justify-content: space-between;
   margin: 0 auto;
+  padding: 0.5rem 1rem;
   width: 100%;
   max-width: 1140px;
 `;

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect, useState, useMemo } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import { auth } from './firebase/init';
 
@@ -13,18 +13,6 @@ import Header from './components/Header';
 import './App.css';
 
 const App = () => {
-  useEffect(() => {
-    const unsub = auth.onAuthStateChanged(authUser => {
-      if (authUser) {
-        localStorage.setItem('currentUser', JSON.stringify(authUser));
-      } else {
-        localStorage.removeItem('currentUser');
-      }
-    });
-
-    return unsub();
-  }, []);
-
   return (
     <>
       <Header />

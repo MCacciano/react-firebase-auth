@@ -4,33 +4,36 @@ import { auth } from '../firebase/init';
 const UserContext = createContext({ user: null });
 
 export const UserProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem('currentUser')));
 
-  // useEffect(() => {
-  //   const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-  //   setUser(currentUser);
-  // }, [localStorage.getItem('currentUser')]);
+  const fireAuthState = () => {
+    const unsub = auth.onAuthStateChanged(authUser => {
+      if (authUser) {
+        const { displayName, email } = authUser;
 
-  // useEffect(() => {
-  //   const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-  //   let unsub;
+        setUser({ displayName, email });
+        localStorage.setItem('currentUser', JSON.stringify({ displayName, email }));
+      } else {
+        setUser(null);
+        localStorage.removeItem('currentUser');
+      }
+    });
 
-  //   if (currentUser) {
-  //     setUser(currentUser);
-  //   } else {
-  //     unsub = auth.onAuthStateChanged(authUser => {
-  //       if (authUser) {
-  //         localStorage.setItem('currentUser', JSON.stringify(authUser));
-  //       } else {
-  //         localStorage.removeItem('currentUser');
-  //       }
-  //     });
-  //   }
+    return unsub;
+  };
 
-  //   return currentUser ? () => null : unsub;
-  // }, [user]);
+  useEffect(() => {
+    const u = JSON.parse(localStorage.getItem('currentUser'));
 
-  return <UserContext.Provider value={{ user }}>{children}</UserContext.Provider>;
+    if (u) {
+      setUser(u);
+      return fireAuthState();
+    }
+
+    return fireAuthState();
+  }, [localStorage.getItem('currentUser')]);
+
+  return <UserContext.Provider value={{ user, setUser }}>{children}</UserContext.Provider>;
 };
 
 export default UserContext;
