@@ -1,41 +1,32 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState, useMemo } from 'react';
 import { Route, Redirect } from 'react-router-dom';
 
+import { auth } from '../../firebase/init';
 import UserContext from '../../context/userContext';
 
 import './AuthRoute.css';
 
 const AuthRoute = ({ component: Component, ...props }) => {
-  const [gate, setGate] = useState(true);
-  const { user } = useContext(UserContext);
+  // const { user } = useContext(UserContext);
 
-  // ! there has to be a better way to handle the flashing of
-  // ! of non auth components while waiting for firebase auth
-  useEffect(() => {
-    setTimeout(() => {
-      if (user === null) {
-        setGate(false);
-      }
-    }, 2000);
-  }, [user]);
+  // console.log('user', user);
+  const user = JSON.parse(localStorage.getItem('currentUser'));
 
-  if (gate) {
-    return (
-      <div className='loading-container'>
-        <div className='loading-ripple'>
-          <div></div>
-          <div></div>
-        </div>
-      </div>
-    );
-  }
+  // if (!user) {
+  //   return (
+  //     <div className="loading-container">
+  //       <div className="loading-ripple">
+  //         <div></div>
+  //         <div></div>
+  //       </div>
+  //     </div>
+  //   );
+  // }
 
   return (
     <Route
       {...props}
-      render={routeProps =>
-        !!user ? <Component {...routeProps} /> : <Redirect to='/' />
-      }
+      render={routeProps => (!!user ? <Component {...routeProps} /> : <Redirect to="/" />)}
     />
   );
 };

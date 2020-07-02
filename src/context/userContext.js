@@ -6,21 +6,31 @@ const UserContext = createContext({ user: null });
 export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
 
-  useEffect(() => {
-    const unsub = auth.onAuthStateChanged(authUser => {
-      if (authUser) {
-        setUser(authUser);
-      } else {
-        setUser(null);
-      }
-    });
+  // useEffect(() => {
+  //   const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+  //   setUser(currentUser);
+  // }, [localStorage.getItem('currentUser')]);
 
-    return () => unsub();
-  }, [user]);
+  // useEffect(() => {
+  //   const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+  //   let unsub;
 
-  return (
-    <UserContext.Provider value={{ user }}>{children}</UserContext.Provider>
-  );
+  //   if (currentUser) {
+  //     setUser(currentUser);
+  //   } else {
+  //     unsub = auth.onAuthStateChanged(authUser => {
+  //       if (authUser) {
+  //         localStorage.setItem('currentUser', JSON.stringify(authUser));
+  //       } else {
+  //         localStorage.removeItem('currentUser');
+  //       }
+  //     });
+  //   }
+
+  //   return currentUser ? () => null : unsub;
+  // }, [user]);
+
+  return <UserContext.Provider value={{ user }}>{children}</UserContext.Provider>;
 };
 
 export default UserContext;
