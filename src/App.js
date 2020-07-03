@@ -1,10 +1,9 @@
-import React, { useContext, useEffect, useState, useMemo } from 'react';
+import React from 'react';
 import { Switch, Route } from 'react-router-dom';
-import { auth } from './firebase/init';
 
 // pages
 import HomePage from './pages';
-import SecretPage from './pages/SecretPage';
+import DashboardPage from './pages/DashboardPage';
 
 // components
 import AuthRoute from './components/AuthRoute';
@@ -17,8 +16,8 @@ const App = () => {
     <>
       <Header />
       <Switch>
-        <Route exact path="/" component={HomePage} />
-        <AuthRoute path="/secret" component={SecretPage} />
+        <Route exact path='/' component={HomePage} />
+        <AuthRoute path='/dashboard' component={DashboardPage} />
       </Switch>
     </>
   );

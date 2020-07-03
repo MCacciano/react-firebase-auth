@@ -10,7 +10,7 @@ const firebaseConfig = {
   projectId: process.env.REACT_APP_PROJECT_ID,
   storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
   messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
-  appId: process.env.REACT_APP_APP_ID
+  appId: process.env.REACT_APP_APP_ID,
 };
 
 if (!firebase.apps.length) {
@@ -30,28 +30,30 @@ const signInWithGoogle = () => auth.signInWithPopup(googleProvider);
 // import { auth } from '../firebase/init';
 
 const FirebaseAuthContext = createContext({ user: null });
+const currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
 export const FirebaseAuthProvider = ({ children }) => {
-  const [user, setUser] = useState(JSON.parse(localStorage.getItem('currentUser')));
+  const [user, setUser] = useState(currentUser);
 
   useEffect(() => {
-    const u = JSON.parse(localStorage.getItem('currentUser'));
-
-    if (u) {
-      setUser(u);
-      return fireAuthState();
+    if (currentUser) {
+      setUser(currentUser);
+      return onAuthStateChanged();
     }
 
-    return fireAuthState();
-  }, [localStorage.getItem('currentUser')]);
+    return onAuthStateChanged();
+  }, []);
 
-  const fireAuthState = () => {
+  const onAuthStateChanged = () => {
     const unsub = auth.onAuthStateChanged(authUser => {
       if (authUser) {
         const { displayName, email } = authUser;
 
         setUser({ displayName, email });
-        localStorage.setItem('currentUser', JSON.stringify({ displayName, email }));
+        localStorage.setItem(
+          'currentUser',
+          JSON.stringify({ displayName, email })
+        );
       } else {
         setUser(null);
         localStorage.removeItem('currentUser');
@@ -64,7 +66,9 @@ export const FirebaseAuthProvider = ({ children }) => {
   const signOut = () => auth.signOut();
 
   return (
-    <FirebaseAuthContext.Provider value={{ user, setUser, signOut, signInWithGoogle }}>
+    <FirebaseAuthContext.Provider
+      value={{ user, setUser, signOut, signInWithGoogle }}
+    >
       {children}
     </FirebaseAuthContext.Provider>
   );

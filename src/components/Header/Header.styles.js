@@ -29,7 +29,10 @@ export const NavItems = styled.ul`
   padding: 0;
 `;
 
-export const NavItem = styled.li``;
+export const NavItem = styled.li`
+  cursor: pointer;
+  padding: 0.5rem;
+`;
 
 export const NavLink = styled(Link)`
   display: block;

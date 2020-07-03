@@ -1,15 +1,54 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React from 'react';
+import { Redirect } from 'react-router-dom';
 import useFirebaseAuth from '../hooks/useFirebaseAuth';
 
-const HomePage = () => {
-  const { user, signInWithGoogle, signOut } = useFirebaseAuth();
+import styles from './Home.module.css';
 
-  return (
-    <div>
-      <button type="button" onClick={user ? signOut : signInWithGoogle}>
-        {user ? 'Sign Out' : 'Sign In'}
-      </button>
-      {user && <h1>{user.displayName}</h1>}
+const HomePage = () => {
+  const { user, signInWithGoogle } = useFirebaseAuth();
+
+  const handleSignInWithGoogle = e => {
+    signInWithGoogle();
+  };
+
+  return !!user ? (
+    <Redirect to='/dashboard' />
+  ) : (
+    <div className={styles.container}>
+      <div className={styles.formContainer}>
+        <h1>Login</h1>
+
+        <form className={styles.loginForm}>
+          <label className={styles.formLabel}>
+            <span className={styles.formLabelText}>Email</span>
+            <input className={styles.formInput} type='email' name='email' />
+          </label>
+          <label className={styles.formLabel}>
+            <span className={styles.formLabelText}>Password</span>
+            <input
+              className={styles.formInput}
+              type='password'
+              name='password'
+            />
+          </label>
+          <div className={styles.btnContainer}>
+            <button
+              className={styles.btn}
+              type='button'
+              onClick={e => console.log('submitted')}
+            >
+              Sign In
+            </button>
+            <button
+              className={styles.btnGoogle}
+              type='button'
+              onClick={handleSignInWithGoogle}
+            >
+              Sign In with Google
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 };
