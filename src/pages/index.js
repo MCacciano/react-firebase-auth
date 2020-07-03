@@ -1,20 +1,12 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { auth, signInWithGoogle } from '../firebase/init';
-
-import UserContext from '../context/userContext';
+import useFirebaseAuth from '../hooks/useFirebaseAuth';
 
 const HomePage = () => {
-  const { user } = useContext(UserContext);
+  const { user, signInWithGoogle, signOut } = useFirebaseAuth();
 
   return (
     <div>
-      {/* <button type="button" onClick={signInWithGoogle}>
-        Sign In
-      </button>
-      <button type="button" onClick={() => auth.signOut()}>
-        Sign Out
-      </button> */}
-      <button type="button" onClick={user ? () => auth.signOut() : signInWithGoogle}>
+      <button type="button" onClick={user ? signOut : signInWithGoogle}>
         {user ? 'Sign Out' : 'Sign In'}
       </button>
       {user && <h1>{user.displayName}</h1>}
