@@ -1,34 +1,33 @@
 import React from 'react';
 
-import {
-  StyledHeader,
-  H1,
-  Navbar,
-  NavItems,
-  NavItem,
-  NavLink,
-} from './Header.styles';
 import useFirebaseAuth from '../../hooks/useFirebaseAuth';
+import { Link } from 'react-router-dom';
+
+import styles from './Header.module.css';
 
 const Header = () => {
   const { user, signOut } = useFirebaseAuth();
 
   return (
-    <StyledHeader>
-      <Navbar>
-        <NavLink to='/'>
-          <H1>RFAuth</H1>
-        </NavLink>
+    <header className={styles.header}>
+      <nav className={styles.navbar}>
+        <Link className={styles.navLink} to="/">
+          <h1 className={styles.logoText}>RFAuth</h1>
+        </Link>
         {user ? (
-          <NavItems>
-            <NavItem>
-              <NavLink to='/dashboard'>{user.displayName}</NavLink>
-            </NavItem>
-            <NavItem onClick={signOut}>Logout</NavItem>
-          </NavItems>
+          <ul className={styles.navItems}>
+            <li className={styles.navItem}>
+              <Link className={styles.navLink} to="/dashboard">
+                {user.displayName || user.email}
+              </Link>
+            </li>
+            <li className={styles.navItem} onClick={signOut}>
+              Logout
+            </li>
+          </ul>
         ) : null}
-      </Navbar>
-    </StyledHeader>
+      </nav>
+    </header>
   );
 };
 

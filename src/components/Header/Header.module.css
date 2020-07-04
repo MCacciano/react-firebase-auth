@@ -1,42 +1,39 @@
-import styled from 'styled-components';
-import { Link } from 'react-router-dom';
-
-export const StyledHeader = styled.header`
+.header {
   width: 100vw;
 
   background-color: #777;
   color: #f4f4f4;
-`;
+}
 
-export const Navbar = styled.nav`
+.navbar {
   display: flex;
   justify-content: space-between;
   margin: 0 auto;
   padding: 0.5rem 1rem;
   width: 100%;
   max-width: 1140px;
-`;
+}
 
-export const H1 = styled.h1`
+.logo {
   font-size: 1.75rem;
-`;
+}
 
-export const NavItems = styled.ul`
+.navItems {
   display: flex;
   align-items: center;
   list-style: none;
   margin: 0;
   padding: 0;
-`;
+}
 
-export const NavItem = styled.li`
+.navItem {
   cursor: pointer;
-  padding: 0.5rem;
-`;
+  margin-left: 1rem;
+}
 
-export const NavLink = styled(Link)`
+.navLink {
   display: block;
   height: 100%;
   text-decoration: none;
   color: #f4f4f4;
-`;
+}

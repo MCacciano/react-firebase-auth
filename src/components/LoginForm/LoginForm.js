@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import useFirebaseAuth from '../../hooks/useFirebaseAuth';
 
-import styles from '../../styles/Home.module.css';
+import styles from '../../styles/Forms.module.css';
 
 const LoginForm = () => {
   const history = useHistory();
@@ -10,8 +10,15 @@ const LoginForm = () => {
   const [password, setPassword] = useState('');
   const { setUser, signInWithGoogle, signInWithEmailAndPassword } = useFirebaseAuth();
 
-  const handleSignInWithGoogle = e => {
-    signInWithGoogle();
+  const handleSignInWithGoogle = async e => {
+    const { user: googleUser } = await signInWithGoogle();
+
+    // ! if the user signs in with google they will have a display name
+    if (googleUser) {
+      const { displayName, email } = googleUser;
+      setUser({ displayName, email });
+      history.push('/dashboard');
+    }
   };
 
   const handleSubmit = async e => {
@@ -24,8 +31,7 @@ const LoginForm = () => {
       const { user: authUser } = await signInWithEmailAndPassword(email, password);
 
       if (authUser) {
-        setUser({ displayName: authUser.email, email: authUser.email });
-
+        setUser({ displayName: authUser.displayName || authUser.email, email: authUser.email });
         history.push('/dashboard');
       }
     } catch (err) {

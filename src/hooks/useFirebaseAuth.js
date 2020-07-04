@@ -25,7 +25,9 @@ const googleProvider = new firebase.auth.GoogleAuthProvider();
 // always prompt for google auth when using this provider
 googleProvider.setCustomParameters({ prompt: 'select_account' });
 
-const signInWithGoogle = () => auth.signInWithPopup(googleProvider);
+const signInWithGoogle = async () => {
+  return await auth.signInWithPopup(googleProvider);
+};
 
 const FirebaseAuthContext = createContext({ user: null });
 const currentUser = JSON.parse(localStorage.getItem('currentUser'));

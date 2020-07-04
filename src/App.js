@@ -8,10 +8,10 @@ import DashboardPage from './pages/DashboardPage';
 // components
 import AuthRoute from './components/AuthRoute';
 import Header from './components/Header';
-
-import './App.css';
 import SignUpForm from './components/SignUpForm/SignUpForm';
 import LoginForm from './components/LoginForm/LoginForm';
+
+import './styles/App.css';
 
 const App = () => {
   return (

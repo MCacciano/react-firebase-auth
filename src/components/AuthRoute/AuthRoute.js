@@ -2,8 +2,6 @@ import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import useFirebaseAuth from '../../hooks/useFirebaseAuth';
 
-import './AuthRoute.css';
-
 const AuthRoute = ({ component: Component, ...props }) => {
   const { user } = useFirebaseAuth();
 

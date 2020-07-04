@@ -2,17 +2,13 @@ import React, { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import useFirebaseAuth from '../../hooks/useFirebaseAuth';
 
-import styles from '../../styles/Home.module.css';
+import styles from '../../styles/Forms.module.css';
 
 const SignUpForm = () => {
   const history = useHistory();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const { setUser, signInWithGoogle, createUserWithEmailAndPassword } = useFirebaseAuth();
-
-  const handleSignInWithGoogle = e => {
-    signInWithGoogle();
-  };
 
   const handleSubmit = async e => {
     e.preventDefault();
@@ -24,11 +20,14 @@ const SignUpForm = () => {
       const newUser = await createUserWithEmailAndPassword(email, password);
 
       if (newUser) {
-        setUser({ displayName: newUser.email, email: newUser.email });
+        setUser({
+          displayName: newUser.displayName || newUser.email,
+          email: newUser.email
+        });
         history.push('/dashboard');
       }
     } catch (err) {
-      console.log(`Error: ${err.code} -- ${err.message}`);
+      console.log(err);
     }
   };
 
@@ -58,7 +57,7 @@ const SignUpForm = () => {
           </label>
           <div className={styles.btnContainer}>
             <button className={styles.btn}>Sign Up</button>
-            <button className={styles.btnGoogle} type="button" onClick={handleSignInWithGoogle}>
+            <button className={styles.btnGoogle} type="button" onClick={signInWithGoogle}>
               Sign In with Google
             </button>
           </div>
