@@ -95,3 +95,13 @@
   color: #fff;
   background-color: #cb3636;
 }
+
+.goToSignIn {
+  display: flex;
+  align-items: center;
+}
+
+.goToSignIn a {
+  text-decoration: none;
+  margin-left: 0.5rem;
+}

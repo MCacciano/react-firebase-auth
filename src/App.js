@@ -10,14 +10,18 @@ import AuthRoute from './components/AuthRoute';
 import Header from './components/Header';
 
 import './App.css';
+import SignUpForm from './components/SignUpForm/SignUpForm';
+import LoginForm from './components/LoginForm/LoginForm';
 
 const App = () => {
   return (
     <>
       <Header />
       <Switch>
-        <Route exact path='/' component={HomePage} />
-        <AuthRoute path='/dashboard' component={DashboardPage} />
+        <Route exact path="/" component={HomePage} />
+        <Route path="/sign-in" component={LoginForm} />
+        <Route path="/sign-up" component={SignUpForm} />
+        <AuthRoute path="/dashboard" component={DashboardPage} />
       </Switch>
     </>
   );

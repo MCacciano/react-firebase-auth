@@ -1,56 +1,34 @@
-import React from 'react';
-import { Redirect } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Redirect, Link, Switch } from 'react-router-dom';
 import useFirebaseAuth from '../hooks/useFirebaseAuth';
+import { auth } from '../firebase/init';
 
-import styles from './Home.module.css';
+import styles from '../styles/Home.module.css';
 
 const HomePage = () => {
-  const { user, signInWithGoogle } = useFirebaseAuth();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const { user, setUser, signInWithGoogle } = useFirebaseAuth();
 
   const handleSignInWithGoogle = e => {
     signInWithGoogle();
   };
 
-  return !!user ? (
-    <Redirect to='/dashboard' />
-  ) : (
-    <div className={styles.container}>
-      <div className={styles.formContainer}>
-        <h1>Login</h1>
+  const handleSubmit = async e => {
+    e.preventDefault();
 
-        <form className={styles.loginForm}>
-          <label className={styles.formLabel}>
-            <span className={styles.formLabelText}>Email</span>
-            <input className={styles.formInput} type='email' name='email' />
-          </label>
-          <label className={styles.formLabel}>
-            <span className={styles.formLabelText}>Password</span>
-            <input
-              className={styles.formInput}
-              type='password'
-              name='password'
-            />
-          </label>
-          <div className={styles.btnContainer}>
-            <button
-              className={styles.btn}
-              type='button'
-              onClick={e => console.log('submitted')}
-            >
-              Sign In
-            </button>
-            <button
-              className={styles.btnGoogle}
-              type='button'
-              onClick={handleSignInWithGoogle}
-            >
-              Sign In with Google
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
-  );
+    if (email === '') return;
+    if (password === '') return;
+
+    try {
+      const authUser = await auth.signInWithEmailAndPassword(email, password);
+      console.log('email and password sign in', authUser);
+    } catch (err) {
+      console.log(`Error: ${err.code} -- ${err.message}`);
+    }
+  };
+
+  return !!user ? <Redirect to="/dashboard" /> : <Redirect to="/sign-in" />;
 };
 
 export default HomePage;

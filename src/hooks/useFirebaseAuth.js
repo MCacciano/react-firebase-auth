@@ -10,7 +10,7 @@ const firebaseConfig = {
   projectId: process.env.REACT_APP_PROJECT_ID,
   storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
   messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
-  appId: process.env.REACT_APP_APP_ID,
+  appId: process.env.REACT_APP_APP_ID
 };
 
 if (!firebase.apps.length) {
@@ -26,8 +26,6 @@ const googleProvider = new firebase.auth.GoogleAuthProvider();
 googleProvider.setCustomParameters({ prompt: 'select_account' });
 
 const signInWithGoogle = () => auth.signInWithPopup(googleProvider);
-
-// import { auth } from '../firebase/init';
 
 const FirebaseAuthContext = createContext({ user: null });
 const currentUser = JSON.parse(localStorage.getItem('currentUser'));
@@ -50,10 +48,7 @@ export const FirebaseAuthProvider = ({ children }) => {
         const { displayName, email } = authUser;
 
         setUser({ displayName, email });
-        localStorage.setItem(
-          'currentUser',
-          JSON.stringify({ displayName, email })
-        );
+        localStorage.setItem('currentUser', JSON.stringify({ displayName, email }));
       } else {
         setUser(null);
         localStorage.removeItem('currentUser');
@@ -65,9 +60,32 @@ export const FirebaseAuthProvider = ({ children }) => {
 
   const signOut = () => auth.signOut();
 
+  const signInWithEmailAndPassword = async (email, password) => {
+    try {
+      return await auth.signInWithEmailAndPassword(email, password);
+    } catch (err) {
+      console.log(err.message);
+    }
+  };
+
+  const createUserWithEmailAndPassword = async (email, password) => {
+    try {
+      return await auth.createUserWithEmailAndPassword(email, password);
+    } catch (err) {
+      console.log(err.message);
+    }
+  };
+
   return (
     <FirebaseAuthContext.Provider
-      value={{ user, setUser, signOut, signInWithGoogle }}
+      value={{
+        user,
+        setUser,
+        signOut,
+        signInWithGoogle,
+        signInWithEmailAndPassword,
+        createUserWithEmailAndPassword
+      }}
     >
       {children}
     </FirebaseAuthContext.Provider>

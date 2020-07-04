@@ -4,11 +4,11 @@ import useFirebaseAuth from '../../hooks/useFirebaseAuth';
 
 import styles from '../../styles/Home.module.css';
 
-const LoginForm = () => {
+const SignUpForm = () => {
   const history = useHistory();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const { setUser, signInWithGoogle, signInWithEmailAndPassword } = useFirebaseAuth();
+  const { setUser, signInWithGoogle, createUserWithEmailAndPassword } = useFirebaseAuth();
 
   const handleSignInWithGoogle = e => {
     signInWithGoogle();
@@ -21,22 +21,21 @@ const LoginForm = () => {
     if (password === '') return;
 
     try {
-      const { user: authUser } = await signInWithEmailAndPassword(email, password);
+      const newUser = await createUserWithEmailAndPassword(email, password);
 
-      if (authUser) {
-        setUser({ displayName: authUser.email, email: authUser.email });
-
+      if (newUser) {
+        setUser({ displayName: newUser.email, email: newUser.email });
         history.push('/dashboard');
       }
     } catch (err) {
-      console.log(err);
+      console.log(`Error: ${err.code} -- ${err.message}`);
     }
   };
 
   return (
     <div className={styles.container}>
       <div className={styles.formContainer}>
-        <h1>Login</h1>
+        <h1>Sign Up</h1>
 
         <form className={styles.loginForm} onSubmit={handleSubmit}>
           <label className={styles.formLabel}>
@@ -58,19 +57,19 @@ const LoginForm = () => {
             />
           </label>
           <div className={styles.btnContainer}>
-            <button className={styles.btn}>Sign In</button>
+            <button className={styles.btn}>Sign Up</button>
             <button className={styles.btnGoogle} type="button" onClick={handleSignInWithGoogle}>
               Sign In with Google
             </button>
           </div>
         </form>
         <div className={styles.goToSignIn}>
-          <span>Don't have an account?</span>
-          <Link to="/sign-up">Sign Up!</Link>
+          <span>Already have an account?</span>
+          <Link to="/">Sign In!</Link>
         </div>
       </div>
     </div>
   );
 };
 
-export default LoginForm;
+export default SignUpForm;
