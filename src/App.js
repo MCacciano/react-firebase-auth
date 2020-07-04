@@ -8,10 +8,9 @@ import DashboardPage from './pages/DashboardPage';
 // components
 import AuthRoute from './components/AuthRoute';
 import Header from './components/Header';
-import SignUpForm from './components/SignUpForm/SignUpForm';
-import LoginForm from './components/LoginForm/LoginForm';
+import SignInAndSignUp from './components/SignInAndSignUp';
 
-import './styles/App.css';
+import './App.css';
 
 const App = () => {
   return (
@@ -19,8 +18,7 @@ const App = () => {
       <Header />
       <Switch>
         <Route exact path="/" component={HomePage} />
-        <Route path="/sign-in" component={LoginForm} />
-        <Route path="/sign-up" component={SignUpForm} />
+        <Route path="/sign-in-and-sign-up" component={SignInAndSignUp} />
         <AuthRoute path="/dashboard" component={DashboardPage} />
       </Switch>
     </>

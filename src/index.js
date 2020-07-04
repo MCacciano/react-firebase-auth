@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router } from 'react-router-dom';
 
-import { FirebaseAuthProvider } from './hooks/useFirebaseAuth';
+import { FirebaseAuthProvider } from './context/firebase';
 
 import App from './App';
 

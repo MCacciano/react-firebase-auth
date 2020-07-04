@@ -1,27 +1,21 @@
-import React from 'react';
-import useFirebaseAuth from '../hooks/useFirebaseAuth';
+import React, { useContext } from 'react';
+import { Redirect } from 'react-router-dom';
+
+import FirebaseAuthContext from '../context/firebase';
 
 const DashboardPage = () => {
-  const { user } = useFirebaseAuth();
+  const { user } = useContext(FirebaseAuthContext);
 
-  return (
+  return !user ? (
+    <Redirect to="sign-in-and-sign-up" />
+  ) : (
     <div
       style={{
         display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
+        justifyContent: 'center'
       }}
     >
-      <h1
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-        }}
-      >
-        <span>Welcome</span>
-        <span>{user.email}!</span>
-      </h1>
+      <h1>Welcome {user.displayName}!</h1>
     </div>
   );
 };

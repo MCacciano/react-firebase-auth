@@ -1,12 +1,21 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { Link, useHistory } from 'react-router-dom';
 
-import useFirebaseAuth from '../../hooks/useFirebaseAuth';
-import { Link } from 'react-router-dom';
+import FirebaseAuthContext from '../../context/firebase';
+import { auth } from '../../firebase/init';
 
 import styles from './Header.module.css';
 
 const Header = () => {
-  const { user, signOut } = useFirebaseAuth();
+  const { user, setUser } = useContext(FirebaseAuthContext);
+  const history = useHistory();
+
+  const handleSignOut = () => {
+    localStorage.removeItem('currentUser');
+    setUser(null);
+    auth.signOut();
+    history.push('/sign-in-and-sign-up');
+  };
 
   return (
     <header className={styles.header}>
@@ -18,10 +27,10 @@ const Header = () => {
           <ul className={styles.navItems}>
             <li className={styles.navItem}>
               <Link className={styles.navLink} to="/dashboard">
-                {user.displayName || user.email}
+                {user.displayName}
               </Link>
             </li>
-            <li className={styles.navItem} onClick={signOut}>
+            <li className={styles.navItem} onClick={handleSignOut}>
               Logout
             </li>
           </ul>
