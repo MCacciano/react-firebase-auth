@@ -1,10 +1,10 @@
 import React, { useContext } from 'react';
 import { Redirect } from 'react-router-dom';
 
-import FirebaseAuthContext from '../context/firebase';
+import UserContext from '../context/user';
 
 const DashboardPage = () => {
-  const { user } = useContext(FirebaseAuthContext);
+  const { user } = useContext(UserContext);
 
   return !user ? (
     <Redirect to="sign-in-and-sign-up" />

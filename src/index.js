@@ -2,16 +2,16 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router } from 'react-router-dom';
 
-import { FirebaseAuthProvider } from './context/firebase';
+import { UserProvider } from './context/user';
 
 import App from './App';
 
 ReactDOM.render(
   <React.StrictMode>
     <Router>
-      <FirebaseAuthProvider>
+      <UserProvider>
         <App />
-      </FirebaseAuthProvider>
+      </UserProvider>
     </Router>
   </React.StrictMode>,
   document.getElementById('root')

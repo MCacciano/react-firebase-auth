@@ -1,13 +1,13 @@
 import React, { useContext } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 
-import FirebaseAuthContext from '../../context/firebase';
+import UserContext from '../../context/user';
 import { auth } from '../../firebase/init';
 
 import styles from './Header.module.css';
 
 const Header = () => {
-  const { user, setUser } = useContext(FirebaseAuthContext);
+  const { user, setUser } = useContext(UserContext);
   const history = useHistory();
 
   const handleSignOut = () => {

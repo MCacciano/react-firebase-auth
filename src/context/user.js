@@ -1,9 +1,9 @@
 import React, { createContext, useEffect, useState } from 'react';
 import { auth } from '../firebase/init';
 
-const FirebaseAuthContext = createContext({ user: null });
+const UserContext = createContext({ user: null });
 
-export const FirebaseAuthProvider = ({ children }) => {
+export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
@@ -33,15 +33,15 @@ export const FirebaseAuthProvider = ({ children }) => {
   }, []);
 
   return (
-    <FirebaseAuthContext.Provider
+    <UserContext.Provider
       value={{
         user,
         setUser
       }}
     >
       {children}
-    </FirebaseAuthContext.Provider>
+    </UserContext.Provider>
   );
 };
 
-export default FirebaseAuthContext;
+export default UserContext;
