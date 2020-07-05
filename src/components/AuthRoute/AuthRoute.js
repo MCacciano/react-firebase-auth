@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Route, Redirect } from 'react-router-dom';
-import useFirebaseAuth from '../../hooks/useFirebaseAuth';
+
+import UserContext from '../../context/user';
 
 const AuthRoute = ({ component: Component, ...props }) => {
-  const { user } = useFirebaseAuth();
+  const { user } = useContext(UserContext);
 
   return (
     <Route

@@ -1,40 +1,50 @@
-import React, { useState } from 'react';
-import { Link, useHistory } from 'react-router-dom';
-import useFirebaseAuth from '../../hooks/useFirebaseAuth';
+import React, { useState, useContext } from 'react';
+import { Redirect } from 'react-router-dom';
 
-import styles from '../../styles/Forms.module.css';
+import UserContext from '../../context/user';
+import { auth, signInWithGoogle } from '../../firebase/init';
 
-const SignUpForm = () => {
-  const history = useHistory();
+import styles from './SignInAndSignUp.module.css';
+
+const SignInAndSignUp = () => {
+  const [isSignIn, setIsSignIn] = useState(true);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const { setUser, signInWithGoogle, createUserWithEmailAndPassword } = useFirebaseAuth();
+
+  const { user, setUser } = useContext(UserContext);
 
   const handleSubmit = async e => {
     e.preventDefault();
 
-    if (email === '') return;
-    if (password === '') return;
+    if (email === '' || password === '') return;
+
+    let currentUser;
 
     try {
-      const newUser = await createUserWithEmailAndPassword(email, password);
-
-      if (newUser) {
-        setUser({
-          displayName: newUser.displayName || newUser.email,
-          email: newUser.email
-        });
-        history.push('/dashboard');
+      if (isSignIn) {
+        const { user: authUser } = await auth.signInWithEmailAndPassword(email, password);
+        currentUser = authUser;
+      } else {
+        const { user: newUser } = await auth.createUserWithEmailAndPassword(email, password);
+        currentUser = newUser;
       }
+
+      setUser({ displayName: currentUser.email, email: currentUser.email });
+      localStorage.setItem(
+        'currentUser',
+        JSON.stringify({ displayName: currentUser.email, email: currentUser.email })
+      );
     } catch (err) {
       console.log(err);
     }
   };
 
+  if (user) return <Redirect to="/dashboard" />;
+
   return (
     <div className={styles.container}>
       <div className={styles.formContainer}>
-        <h1>Sign Up</h1>
+        <h1>{isSignIn ? 'Sign In' : 'Sign Up'}</h1>
 
         <form className={styles.loginForm} onSubmit={handleSubmit}>
           <label className={styles.formLabel}>
@@ -56,7 +66,7 @@ const SignUpForm = () => {
             />
           </label>
           <div className={styles.btnContainer}>
-            <button className={styles.btn}>Sign Up</button>
+            <button className={styles.btn}>{isSignIn ? 'Sign In' : 'Sign Up'}</button>
             <button className={styles.btnGoogle} type="button" onClick={signInWithGoogle}>
               Sign In with Google
             </button>
@@ -64,11 +74,13 @@ const SignUpForm = () => {
         </form>
         <div className={styles.goToSignIn}>
           <span>Already have an account?</span>
-          <Link to="/">Sign In!</Link>
+          <button className={styles.formToggle} onClick={() => setIsSignIn(!isSignIn)}>
+            {isSignIn ? 'Sign Up' : 'Sign In'}!
+          </button>
         </div>
       </div>
     </div>
   );
 };
 
-export default SignUpForm;
+export default SignInAndSignUp;

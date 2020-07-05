@@ -3,13 +3,13 @@ import 'firebase/auth';
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: 'AIzaSyBiYpByM4EjqkkxiSabde8SWDP3seUHQrI',
-  authDomain: 'react-firebase-auth-1f1d1.firebaseapp.com',
-  databaseURL: 'https://react-firebase-auth-1f1d1.firebaseio.com',
-  projectId: 'react-firebase-auth-1f1d1',
-  storageBucket: 'react-firebase-auth-1f1d1.appspot.com',
-  messagingSenderId: '303169304360',
-  appId: '1:303169304360:web:719b8ac98b27f112cf021d'
+  apiKey: process.env.REACT_APP_API_KEY,
+  authDomain: process.env.REACT_APP_AUTH_DOMAIN,
+  databaseURL: process.env.REACT_APP_DATABASE_URL,
+  projectId: process.env.REACT_APP_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_APP_ID
 };
 
 if (!firebase.apps.length) {
@@ -24,6 +24,8 @@ const googleProvider = new firebase.auth.GoogleAuthProvider();
 // always prompt for google auth when using this provider
 googleProvider.setCustomParameters({ prompt: 'select_account' });
 
-export const signInWithGoogle = () => auth.signInWithPopup(googleProvider);
+export const signInWithGoogle = async () => {
+  return await auth.signInWithPopup(googleProvider);
+};
 
 export default firebase;
